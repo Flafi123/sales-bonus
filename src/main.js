@@ -73,7 +73,7 @@ function analyzeSalesData(data, options) {
     data.purchase_records.forEach(record => {
         const seller = sellerIndex[record.seller_id];
         if (!seller) {
-            console.warn(`Продавец не найден: ${record.seller_id}`);
+            console.log(`Продавец не найден: ${record.seller_id}`);
             return;
         }
 
@@ -82,7 +82,7 @@ function analyzeSalesData(data, options) {
         record.items.forEach(item => {
             const product = productIndex[item.sku];
             if (!product) {
-                console.warn(`Товар не найден: ${item.sku}`);
+                console.log(`Товар не найден: ${item.sku}`);
                 return;
             }
 
