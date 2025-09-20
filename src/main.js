@@ -17,7 +17,8 @@ function calculateSimpleRevenue(purchase, _product) {
 }
 
 function analyzeSalesData(data, options) {
-    
+    const sellerIndex = Object.fromEntries(sellerStats.map(s => [s.seller_id, s]));
+    const productIndex = Object.fromEntries(data.products.map(p => [p.sku, p]));
     data.purchase_records.forEach(record => {
         const seller = sellerIndex[record.seller_id];
         if (!seller) {
@@ -47,8 +48,6 @@ function analyzeSalesData(data, options) {
     }));
 
     // Индексы для быстрого доступа
-    const sellerIndex = Object.fromEntries(sellerStats.map(s => [s.seller_id, s]));
-    const productIndex = Object.fromEntries(data.products.map(p => [p.sku, p]));
 
     // Обработка чеков
     data.purchase_records.forEach(record => {
