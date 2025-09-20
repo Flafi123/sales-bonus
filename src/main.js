@@ -16,16 +16,7 @@ function calculateSimpleRevenue(purchase, _product) {
     return sale_price * quantity * (1 - discount / 100);
 }
 
-function analyzeSalesData(data, options) {
-    const sellerIndex = Object.fromEntries(data.sellers.map(s => [s.seller_id, s]));
-    const productIndex = Object.fromEntries(data.products.map(p => [p.sku, p]));
-    data.purchase_records.forEach(record => {
-                const seller = sellerIndex[record.seller_id];
-                if (!seller) {
-                    throw new Error(`Продавец с ID ${record.seller_id} не найден`);
-                }
-            });
-    
+function analyzeSalesData(data, options) {    
     if (!data || !data.sellers || !data.customers || !data.products || !data.purchase_records ) {
         throw new Error('Некорректные входные данные');
     }
@@ -33,14 +24,10 @@ function analyzeSalesData(data, options) {
     if (data.purchase_records.length === 0) {
         throw new Error('Массив purchase_records пуст');
     }
-    
+
     if (typeof options !== "object") {
         throw new Error('Опции должны быть объектом');
     }
-
-    const { calculateRevenue = calculateSimpleRevenue, calculateBonus = calculateBonusByProfit } = options;
-
-    // Создаем статистику по продавцам
     const sellerStats = data.sellers.map(seller => ({
         seller_id: seller.id,
         name: `${seller.first_name} ${seller.last_name}`,
@@ -51,6 +38,22 @@ function analyzeSalesData(data, options) {
         bonus: 0,
         top_products: []
     }));
+    const sellerIndex = Object.fromEntries(data.sellerStats.map(s => [s.seller_id, s]));
+    console.log(sellerIndex);
+    const productIndex = Object.fromEntries(data.products.map(p => [p.sku, p]));
+    data.purchase_records.forEach(record => {
+                const seller = sellerIndex[record.seller_id];
+                if (!seller) {
+                    throw new Error(`Продавец с ID ${record.seller_id} не найден`);
+                }
+            });
+    
+
+
+    const { calculateRevenue = calculateSimpleRevenue, calculateBonus = calculateBonusByProfit } = options;
+
+    // Создаем статистику по продавцам
+    
     
     // Индексы для быстрого доступа
 
