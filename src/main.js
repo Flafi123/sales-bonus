@@ -33,11 +33,14 @@ function analyzeSalesData(data, options) {
         throw new Error('Некорректные входные данные');
     }
 
-    if (data.purchase_records.length === 0) {
+    if (data.purchase_records.length === 0 ) {
         throw new Error('Массив purchase_records пуст');
     }
+    if (data.products.length === 0 ) {
+        throw new Error('Массив products пуст');
+    }
 
-    if (typeof options !== "object") {
+    if (typeof options !== "object" || options === null) {
         throw new Error('Опции должны быть объектом');
     }
     const sellerStats = data.sellers.map(seller => ({
@@ -73,7 +76,7 @@ function analyzeSalesData(data, options) {
     data.purchase_records.forEach(record => {
         const seller = sellerIndex[record.seller_id];
         if (!seller) {
-            console.log(`Продавец не найден: ${record.seller_id}`);
+            console.warn(`Продавец не найден: ${record.seller_id}`);
             return;
         }
 
@@ -82,7 +85,7 @@ function analyzeSalesData(data, options) {
         record.items.forEach(item => {
             const product = productIndex[item.sku];
             if (!product) {
-                console.log(`Товар не найден: ${item.sku}`);
+                console.warn(`Товар не найден: ${item.sku}`);
                 return;
             }
 
