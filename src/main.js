@@ -17,7 +17,14 @@ function calculateSimpleRevenue(purchase, _product) {
 }
 
 function analyzeSalesData(data, options) {
-    
+    const sellerIndex = Object.fromEntries(data.sellers.map(s => [s.seller_id, s]));
+    const productIndex = Object.fromEntries(data.products.map(p => [p.sku, p]));
+    data.purchase_records.forEach(record => {
+                const seller = sellerIndex[record.seller_id];
+                if (!seller) {
+                    throw new Error(`Продавец с ID ${record.seller_id} не найден`);
+                }
+            });
     
     if (!data || !data.sellers || !data.customers || !data.products || !data.purchase_records ) {
         throw new Error('Некорректные входные данные');
@@ -42,14 +49,7 @@ function analyzeSalesData(data, options) {
     }));
     
     // Индексы для быстрого доступа
-    const sellerIndex = Object.fromEntries(sellerStats.map(s => [s.seller_id, s]));
-    const productIndex = Object.fromEntries(data.products.map(p => [p.sku, p]));
-    data.purchase_records.forEach(record => {
-                const seller = sellerIndex[record.seller_id];
-                if (!seller) {
-                    throw new Error(`Продавец с ID ${record.seller_id} не найден`);
-                }
-            });
+
     // Обработка чеков
     data.purchase_records.forEach(record => {
         const seller = sellerIndex[record.seller_id];
