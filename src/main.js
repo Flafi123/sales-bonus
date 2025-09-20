@@ -30,6 +30,10 @@ function analyzeSalesData(data, options) {
         throw new Error('Некорректные входные данные');
     }
 
+    if (data.purchase_records.length === 0) {
+        throw new Error('Массив purchase_records пуст');
+    }
+    
     if (typeof options !== "object") {
         throw new Error('Опции должны быть объектом');
     }
