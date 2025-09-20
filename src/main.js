@@ -65,7 +65,7 @@ function analyzeSalesData(data, options) {
     
 
 
-    const { calculateRevenue = calculateSimpleRevenue, calculateBonus = calculateBonusByProfit } = options;
+    const { calculateRevenue, calculateBonus } = options;
 
     // Создаем статистику по продавцам
     
@@ -81,7 +81,7 @@ function analyzeSalesData(data, options) {
         }
 
         seller.sales_count++;
-
+            seller.revenue += record.total_amount;
         record.items.forEach(item => {
             const product = productIndex[item.sku];
             if (!product) {
@@ -94,7 +94,7 @@ function analyzeSalesData(data, options) {
             const itemProfit = revenue - cost;
 
             seller.profit += itemProfit;
-            seller.revenue += revenue;
+
 
             // Учёт проданных товаров
             seller.products_sold[item.sku] = (seller.products_sold[item.sku] || 0) + item.quantity;
