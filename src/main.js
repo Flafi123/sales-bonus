@@ -1,4 +1,16 @@
-
+/**
+ * Функция для расчета выручки
+ * @param purchase запись о покупке
+ * @param _product карточка товара
+ * @returns {number}
+ */
+/**
+ * Функция для расчета бонусов
+ * @param index порядковый номер в отсортированном массиве
+ * @param total общее число продавцов
+ * @param seller карточка продавца
+ * @returns {number}
+ */
 function calculateBonusByProfit(index, total, seller) {
     if (index === 0) {
         return seller.profit * 0.15;
@@ -38,8 +50,8 @@ function analyzeSalesData(data, options) {
         bonus: 0,
         top_products: []
     }));
-    const sellerIndex = Object.fromEntries(data.sellerStats.map(s => [s.seller_id, s]));
-    console.log(sellerIndex);
+    const sellerIndex = Object.fromEntries(sellerStats.map(s => [s.seller_id, s]));
+    // console.log(sellerIndex);
     const productIndex = Object.fromEntries(data.products.map(p => [p.sku, p]));
     data.purchase_records.forEach(record => {
                 const seller = sellerIndex[record.seller_id];
