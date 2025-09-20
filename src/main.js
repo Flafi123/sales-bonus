@@ -40,16 +40,16 @@ function analyzeSalesData(data, options) {
         bonus: 0,
         top_products: []
     }));
-    data.purchase_records.forEach(record => {
-            const seller = sellerIndex[record.seller_id];
-            if (!seller) {
-                throw new Error(`Продавец с ID ${record.seller_id} не найден`);
-            }
-        });
+    
     // Индексы для быстрого доступа
     const sellerIndex = Object.fromEntries(sellerStats.map(s => [s.seller_id, s]));
     const productIndex = Object.fromEntries(data.products.map(p => [p.sku, p]));
-
+    data.purchase_records.forEach(record => {
+                const seller = sellerIndex[record.seller_id];
+                if (!seller) {
+                    throw new Error(`Продавец с ID ${record.seller_id} не найден`);
+                }
+            });
     // Обработка чеков
     data.purchase_records.forEach(record => {
         const seller = sellerIndex[record.seller_id];
