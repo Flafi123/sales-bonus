@@ -17,7 +17,14 @@ function calculateSimpleRevenue(purchase, _product) {
 }
 
 function analyzeSalesData(data, options) {
-    if (!data || !data.sellers || !data.customers || !data.products || !data.purchase_records) {
+    
+    data.purchase_records.forEach(record => {
+        const seller = sellerIndex[record.seller_id];
+        if (!seller) {
+            throw new Error(`Продавец с ID ${record.seller_id} не найден`);
+        }
+    });
+    if (!data || !data.sellers || !data.customers || !data.products || !data.purchase_records ) {
         throw new Error('Некорректные входные данные');
     }
 
